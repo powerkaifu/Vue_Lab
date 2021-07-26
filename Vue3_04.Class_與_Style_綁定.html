@@ -6,27 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>Data_Property_和方法</title>
+    <title>Class 與 Style 綁定</title>
     <style></style>
   </head>
 
   <body>
     <div class="container">
-      <div id="app">
-        <h1>Data_Property_和方法</h1>
-        <ul>
-          <li>組件的 data 選項必須是一個函數，且返回一個物件。</li>
-          <li>
-            不包含在 data 中的新 property 添加到組件實體是沒問題的。但由於該 property 不在背後的響應式 $data
-            物件內，所以 Vue 的響應性系統不會自動跟蹤它。
-          </li>
-        </ul>
-        <h2>method</h2>
-        {{ count }}
-        <button @click="addCount">Click</button>
-      </div>
+      <h1>Class 與 Style 綁定</h1>
     </div>
-
     <!-- jQuery 3.6.0 -->
     <script src="./js/jquery-3.6.0.js"></script>
     <!-- Bootstrap v5.0.1 -->
@@ -48,23 +35,6 @@
     <!-- gsap plugins - club 會員付費 -->
     <script src="./plugins/SplitText.min.js"></script>
 
-    <script>
-      const app = Vue.createApp({
-        data() {
-          return {
-            count: 0
-          }
-        },
-        methods: {
-          addCount() {
-            // this 指向組件實體
-            this.count++
-          }
-        }
-      })
-
-      // 綁定連接資料與畫面
-      const vm = app.mount('#app')
-    </script>
+    <script></script>
   </body>
 </html>
