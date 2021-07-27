@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>條件渲染</title>
+    <style>
+      p {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+      }
+      .isRed {
+        color: red;
+      }
+      .isYellow {
+        color: yellow;
+      }
+      .isBlue {
+        color: blue;
+      }
+      .isLightBlue {
+        color: lightblue;
+      }
+      .isGreen {
+        color: green;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="app">
+        <h1>條件渲染</h1>
+        <p>v-if 指令用於條件性地渲染一塊內容。這塊內容只會在指令的表達式返回 truthy 值的時候被渲染。</p>
+        <p>此外還有 v-elseif、v-else。</p>
+        <hr />
+        <p>你正在考慮跟這怪物的差距：</p>
+        <div style="background: black; padding: 1rem; border-radius: 1rem">
+          <p :class="c_consider" v-if="rate > 90">你準備想在墳墓上寫些甚麼？</p>
+          <p :class="c_consider" v-else-if="rate > 70">你正在做一件非常危險的事情！</p>
+          <p :class="c_consider" v-else-if="rate > 50">你跟他勢均力敵！</p>
+          <p :class="c_consider" v-else-if="rate > 30">你可以輕鬆勝過他！</p>
+          <p :class="c_consider" v-else>你在欺負弱小？</p>
+        </div>
+        <hr />
+        <h2>Template</h2>
+        <p>
+          想切換多個元素可以把一個 template 當做不可見的包裹元素，並在其裡面使用 v-if。渲染結果將不包含 template 元素。
+        </p>
+        <template v-if="1">
+          <h2>奇幻冒險遊戲</h2>
+          <p>心情執行時間唯一郵箱男生目標投票出租那位排行榜，來了推坑王。</p>
+        </template>
+        <hr />
+        <h2>v-show</h2>
+        <p>v-show 切換的是 display 屬性，</p>
+        <p v-show="true">阿囉哈</p>
+        <hr />
+        <h2>v-if 與 v-show</h2>
+        <ul>
+          <li>v-if 是真正的條件渲染，因為它會確保在切換過程中，條件塊內的事件監聽器和子組件適當地被銷燬和重建。</li>
+          <li>v-if 也是惰性的：如果在初始渲染時條件為假，則什麼也不做——直到條件第一次變為真時，才會開始渲染條件塊。</li>
+          <li>相比之下，v-show 就簡單得多——不管初始條件是什麼，元素總是會被渲染，並且只是簡單地基於 CSS 進行切換。</li>
+          <li>一般來說，v-if 有更高的切換開銷（需抽換元素），而 v-show 有更高的初始渲染開銷。</li>
+          <li>
+            如果單一個元素非常頻繁地切換，則使用 v-show 較好（顯示／隱藏效果），如果在運行時條件很少改變，則使用 v-if
+            較好。
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- jQuery 3.6.0 -->
+    <script src="./js/jquery-3.6.0.js"></script>
+    <!-- Bootstrap v5.0.1 -->
+    <script src="./js/bootstrap.bundle.js"></script>
+    <!-- Vue -->
+    <!-- 3.x -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+    <!-- gsap 主程式 -->
+    <script src="./gsap/gsap.js"></script>
+    <!-- gsap plugins - Core 與 Extra Free  -->
+    <script src="./gsap/CustomEase.js"></script>
+    <script src="./gsap/MotionPathPlugin.js"></script>
+    <script src="./gsap/ScrollToPlugin.js"></script>
+    <script src="./gsap/ScrollTrigger.js"></script>
+    <!-- gsap plugins - club 會員付費 -->
+    <script src="./plugins/SplitText.min.js"></script>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            test: '',
+            nowDay: new Date().getDay(),
+            rate: Math.round(Math.random() * 100),
+            consideColor: {
+              isRed: false,
+              isYellow: false,
+              isBlue: false,
+              isLightBlue: false,
+              isGreen: false
+            }
+          }
+        },
+        computed: {
+          c_consider() {
+            if (this.rate > 90) {
+              this.consideColor.isRed = true
+            } else if (this.rate > 70) {
+              this.consideColor.isYellow = true
+            } else if (this.rate > 50) {
+              this.consideColor.isBlue = true
+            } else if (this.rate > 30) {
+              this.consideColor.isLightBlue = true
+            } else {
+              this.consideColor.isGreen = true
+            }
+            return this.consideColor
+          }
+        }
+      })
+
+      const vm = app.mount('#app')
+    </script>
+  </body>
+</html>
