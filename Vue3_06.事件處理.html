@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>Vue3x</title>
+    <style>
+      p {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="app">
+        <h1>事件處理</h1>
+        <p>v-on 指令用來監聽 DOM 事件，縮寫為小耳朵 @。</p>
+        <button @click="foo()">點擊事件</button>
+        <hr />
+        <button @click="showTime(),showName()">也可以多事件</button>
+        <p v-if="time">{{ time }}</p>
+        <p v-if="person.toggle">{{ person.firstName }}</p>
+        <hr />
+        <button @click="isWho(person.firstName,person.lastName)">傳參數</button>
+        <p v-if="person.toggle">{{ fullName }}</p>
+        <hr />
+        <h2>事件修飾符</h2>
+        <p>
+          在事件處理程序中調用 event.preventDefault() 或 event.stopPropagation()
+          是非常常見的需求。儘管我們可以在方法中輕鬆實現這點，但更好的方式是：方法只有純粹的數據邏輯，而不是去處理 DOM
+          事件細節。 為了解決這個問題，Vue.js 為 v-on 提供了事件修飾符。之前提過，修飾符是由點開頭的指令後綴來表示的。
+          <a
+            href="https://v3.cn.vuejs.org/guide/events.html#%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6"
+            target="_blank"
+          >
+            官網
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- jQuery 3.6.0 -->
+    <script src="./js/jquery-3.6.0.js"></script>
+    <!-- Bootstrap v5.0.1 -->
+    <script src="./js/bootstrap.bundle.js"></script>
+    <!-- Vue -->
+    <!-- 3.x -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+    <!-- gsap 主程式 -->
+    <script src="./gsap/gsap.js"></script>
+    <!-- gsap plugins - Core 與 Extra Free  -->
+    <script src="./gsap/CustomEase.js"></script>
+    <script src="./gsap/MotionPathPlugin.js"></script>
+    <script src="./gsap/ScrollToPlugin.js"></script>
+    <script src="./gsap/ScrollTrigger.js"></script>
+    <!-- gsap plugins - club 會員付費 -->
+    <script src="./gsap/plugins/SplitText.min.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            person: {
+              toggle: 0,
+              firstName: 'KaiFu',
+              lastName: 'Chang',
+              age: 18,
+              fullName: ''
+            },
+            time: ''
+          }
+        },
+        methods: {
+          foo() {
+            alert('點擊事件')
+          },
+          showTime() {
+            return (this.time = new Date())
+          },
+          showName() {
+            this.person.toggle = 1
+          },
+          isWho(name1, name2) {
+            if (this.person.toggle == 0) {
+              this.person.toggle = 1
+              this.fullName = name1 + '' + name2
+            } else {
+              this.person.toggle = 0
+              this.fullName = ''
+            }
+          }
+        }
+      })
+
+      const vm = app.mount('#app')
+    </script>
+  </body>
+</html>

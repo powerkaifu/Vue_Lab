@@ -6,24 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>Data_Property_和方法</title>
-    <style></style>
+    <title>列表渲染</title>
+    <style>
+      p {
+        font-size: 1.5rem;
+      }
+    </style>
   </head>
 
   <body>
     <div class="container">
       <div id="app">
-        <h1>Data_Property_和方法</h1>
+        <h1>列表渲染</h1>
         <ul>
-          <li>組件的 data 選項必須是一個函數，且返回一個物件。</li>
+          <li>迭代陣列時，(value,index) of array</li>
+          <li>迭代物件時，(value,key,index) in object</li>
           <li>
-            不包含在 data 中的新 property 添加到組件實體是沒問題的。但由於該 property 不在背後的響應式 $data
-            物件內，所以 Vue 的響應性系統不會自動跟蹤它。
+            在遍歷物件時，會按 Object.keys() 的結果遍歷，不能保證它在不同 JavaScript 引擎下的結果都一致。可以提供 :key
+            綁定唯一值，例如資料的id，例如 :key="user.id"
           </li>
+          <li>不要使用物件或陣列之類的非基本類型值作為 v-for 的 key。請用字串或數值類型的值。</li>
         </ul>
-        <h2>method</h2>
-        {{ count }}
-        <button @click="addCount">Click</button>
+        <div class="row">
+          <div class="col-4" v-for="(user,index) of users" :key="user.id">
+            <div class="card">
+              <img :src="`https://picsum.photos/400/300/?random=${index}`" class="card-img-top" />
+              <div class="card-body">
+                <h5 class="card-title">{{ user.name }}</h5>
+                <p class="card-text">{{ user.email }}</p>
+                <p>{{ user.phone }}</p>
+                <p>{{ user.website }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -36,6 +52,7 @@
     <!-- 3.x -->
     <script src="https://unpkg.com/vue@next"></script>
     <!-- axios -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <!-- lodash -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
@@ -48,23 +65,22 @@
     <script src="./gsap/ScrollTrigger.js"></script>
     <!-- gsap plugins - club 會員付費 -->
     <script src="./gsap/plugins/SplitText.min.js"></script>
-
     <script>
       const app = Vue.createApp({
         data() {
           return {
-            count: 0
+            users: null
           }
         },
-        methods: {
-          addCount() {
-            // this 指向組件實體
-            this.count++
-          }
+        mounted() {
+          // 不可用匿名函式，需使用箭頭函式才可指到 Vue 實體
+          axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
+            console.log(this === vm) // => vm instance
+            console.log(res.data)
+            this.users = res.data
+          })
         }
       })
-
-      // 綁定連接資料與畫面
       const vm = app.mount('#app')
     </script>
   </body>
