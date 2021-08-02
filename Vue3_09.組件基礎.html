@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>組件基礎</title>
+    <style>
+      p {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1>組件基礎</h1>
+        <ul>
+          <li>組件彼此獨立，可重複使用。</li>
+          <li>元件名稱養成習慣使用小寫 + kebab-cased (烤肉串寫法，單字橫線字符分隔)，在使用標籤上符合 HTML 規範。</li>
+          <li>組件也有樹的概念，可以形成組件樹。</li>
+        </ul>
+
+        <hr />
+
+        <h2>透過 app.componet() 方法註冊</h2>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+
+        <hr />
+
+        <h2>設定 props</h2>
+        <ul>
+          <li>props 可以定義組件自己的 attribute，讓他處的資料從 attribute 接收且流進組件裡面。</li>
+          <li>
+            可以是陣列形式，或是更詳細的物件形式：
+            <ul>
+              <li>陣列寫法：注意　attribute name 是字串。</li>
+              <li>
+                物件寫法：對 props
+                有更詳細資料驗證的設定，type、required、default（注意物件、陣列、函式的預設需使用default(){...}）、自訂驗證函式
+                validator()。
+                <ul>
+                  <li>
+                    type 類型檢查可以是以下：
+                    <a
+                      href="https://v3.cn.vuejs.org/guide/component-props.html#%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5"
+                      target="_blank"
+                    >
+                      官網
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>請把 props 當作 data 資料使用，可以用 this 去存取。</li>
+          <li>
+            props 會在創建實體之前（beforeCreate）進行驗證，所以 data、computed 的 property 在 default、validator
+            函式不能使用。
+          </li>
+          <li>使用組檢時可以使用 v-bind 解構物件並且對應 attribute</li>
+        </ul>
+        <div class="row">
+          <div class="col-4" v-for="user in users">
+            <child-component v-bind="user"></child-component>
+          </div>
+        </div>
+
+        <hr />
+
+        <h2>監聽子組件事件</h2>
+        <div class="row">
+          <div class="col-4" v-for="user of users">
+            <child-event
+              v-bind="user"
+              v-if="user.name === 'Leanne Graham'"
+              @change-color="color('#FF0000',$event)"
+              ref="child1"
+            ></child-event>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- jQuery 3.6.0 -->
+    <script src="./js/jquery-3.6.0.js"></script>
+    <!-- Bootstrap v5.0.1 -->
+    <script src="./js/bootstrap.bundle.js"></script>
+    <!-- Vue -->
+    <!-- 3.x -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+    <!-- gsap 主程式 -->
+    <script src="./gsap/gsap.js"></script>
+    <!-- gsap plugins - Core 與 Extra Free  -->
+    <script src="./gsap/CustomEase.js"></script>
+    <script src="./gsap/MotionPathPlugin.js"></script>
+    <script src="./gsap/ScrollToPlugin.js"></script>
+    <script src="./gsap/ScrollTrigger.js"></script>
+    <!-- gsap plugins - club 會員付費 -->
+    <script src="./gsap/plugins/SplitText.min.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            users: ''
+          }
+        },
+        methods: {
+          color(value, event) {
+            console.log(value, event)
+            event.path[1].style.color = value
+          }
+        },
+        mounted() {
+          axios({
+            method: 'get',
+            url: 'https://jsonplaceholder.typicode.com/users'
+          }).then(res => {
+            this.users = res.data
+          })
+        }
+      })
+
+      app.component('button-counter', {
+        template:
+          /*html*/
+          `<button @click="counter++">Click {{ counter }} 次！</button>`,
+        data() {
+          return {
+            counter: 0
+          }
+        }
+      })
+
+      app.component('child-component', {
+        template:
+          /*html*/
+          `
+          <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ name }}</h5>
+                <p class="card-text">{{ email }}</p>
+                <p class="card-text">{{ phone }}</p>
+              </div>
+           </div>
+          `,
+        props: ['name', 'email', 'phone']
+      })
+
+      app.component('child-event', {
+        template:
+          /* html */
+          `
+          <div class="card" @click="$emit('change-color',$event)">
+            <div class="card-body">
+              <h5 class="card-title">{{ name }}</h5>
+              <p class="card-text">{{ email }}</p>
+              <p class="card-text">{{ phone }}</p>
+            </div>
+          </div>
+           `,
+        props: ['name', 'email', 'phone']
+      })
+
+      const vm = app.mount('#app')
+    </script>
+  </body>
+</html>
