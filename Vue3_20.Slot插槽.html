@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>Vue3x</title>
+    <style>
+      p {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1>Slot插槽</h1>
+        <p>
+          插槽指在內層子組件打了個洞，在子組件模板加上&lt;slot&gt;&lt;/slot&gt;當作佔位器，允許外層傳入內容時在此顯示。子組件本身對
+          slot 沒有任何控制權，完全不知道也不管 slot 被傳入甚麼東西。
+        </p>
+
+        <hr />
+
+        <slot-it>{{ msg }}</slot-it>
+
+        <hr />
+
+        <p>
+          如果需要預設內容可以在子組件模板 slot
+          佔位器上先輸入內容，前提是外層要沒有輸入任何內容，預設內容才會顯示。如上面外層已經輸入內容 msg，那麼
+          "我是預設內容" 就不會出現。
+        </p>
+
+        <hr />
+
+        <h2>具名插槽</h2>
+        <p>
+          具名插槽就是在子組件模板給予插槽 name 屬性，在外層使用 template、v-slot 語法，並且指名哪個插槽要插入甚麼內容。
+        </p>
+        <slot-named>
+          <template v-slot:header>hello，我是具名插槽 header 插入的內容</template>
+          hello，這沒有具名，我是body
+          <template v-slot:footer>hello，我是具名插槽 footer 插入的內容</template>
+        </slot-named>
+      </div>
+    </div>
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- jQuery 3.6.0 -->
+    <script src="./js/jquery-3.6.0.js"></script>
+    <!-- Bootstrap v5.0.1 -->
+    <script src="./js/bootstrap.bundle.js"></script>
+    <!-- Vue -->
+    <!-- 3.x -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+    <!-- gsap 主程式 -->
+    <script src="./gsap/gsap.js"></script>
+    <!-- gsap plugins - Core 與 Extra Free  -->
+    <script src="./gsap/CustomEase.js"></script>
+    <script src="./gsap/MotionPathPlugin.js"></script>
+    <script src="./gsap/ScrollToPlugin.js"></script>
+    <script src="./gsap/ScrollTrigger.js"></script>
+    <!-- gsap plugins - club 會員付費 -->
+    <script src="./gsap/plugins/SplitText.min.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            msg: '我是外層的內容，要在內層的 slot 顯示',
+            langOptions: [
+              { name: '繁體中文', val: 'tw' },
+              { name: '日本語', val: 'jp' },
+              { name: 'English', val: 'en' }
+            ],
+            lang: 'tw'
+          }
+        }
+      })
+
+      app.component('slot-it', {
+        /*html*/
+        template: `
+        <div>
+          <slot>我是預設內容</slot>
+          <br>
+          {{ msg }}
+        </div>
+        `,
+        data() {
+          return {
+            msg: '我是內層的內容'
+          }
+        }
+      })
+
+      app.component('slot-named', {
+        /*html*/
+        template: `
+          <div>
+            <slot name="header">Default Header</slot>
+            <hr>
+            <slot>Default Body</slot>
+            <hr>
+            <slot name="footer">Default Footer</slot>
+          </div>
+        `
+      })
+      const vm = app.mount('#app')
+    </script>
+  </body>
+</html>

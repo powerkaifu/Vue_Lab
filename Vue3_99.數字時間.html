@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>數字時間</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    span {
+      font-size: 10rem;
+    }
+
+    #app {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <span>{{ hour }}</span>
+    <span>：</span>
+    <span>{{ min }}</span>
+    <span>：</span>
+    <span>{{ sec }}</span>
+  </div>
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          hour: 0,
+          min: 0,
+          sec: 0
+        }
+      },
+      mounted() {
+        setInterval(() => {
+          const date = new Date()
+          this.hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+          this.min = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+          this.sec = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+        }, 1000)
+      }
+    })
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>

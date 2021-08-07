@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <title>Vue3x</title>
+    <style>
+      p {
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container">
+        <h2>Scoped Slots</h2>
+        <p>插槽的內容原本是由外層提供，但是如果要使用子組件內的 data、props，就要使用 Scoped Slots 來處理。</p>
+        <select v-model="lang">
+          <option v-for="langOption of langOptions" :value="langOption.val">{{ langOption.name }}</option>
+        </select>
+        <slot-scoped :lang="lang">
+          <template v-slot:default="props">
+            {{ langOptions.find(langOption => langOption.val === lang)['name'] }}: {{ props.hello }}
+          </template>
+        </slot-scoped>
+      </div>
+    </div>
+    <!-- -------------------------------------------------------------------------------------- -->
+    <!-- jQuery 3.6.0 -->
+    <script src="./js/jquery-3.6.0.js"></script>
+    <!-- Bootstrap v5.0.1 -->
+    <script src="./js/bootstrap.bundle.js"></script>
+    <!-- Vue -->
+    <!-- 3.x -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+    <!-- gsap 主程式 -->
+    <script src="./gsap/gsap.js"></script>
+    <!-- gsap plugins - Core 與 Extra Free  -->
+    <script src="./gsap/CustomEase.js"></script>
+    <script src="./gsap/MotionPathPlugin.js"></script>
+    <script src="./gsap/ScrollToPlugin.js"></script>
+    <script src="./gsap/ScrollTrigger.js"></script>
+    <!-- gsap plugins - club 會員付費 -->
+    <script src="./gsap/plugins/SplitText.min.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            msg: '我是外層的內容，要在內層的 slot 顯示',
+            langOptions: [
+              { name: '繁體中文', val: 'tw' },
+              { name: '日本語', val: 'jp' },
+              { name: 'English', val: 'en' }
+            ],
+            lang: 'tw'
+          }
+        }
+      })
+      app.component('slot-scoped', {
+        /* html */
+        template: `
+        <div>
+          <slot name="default" :hello="helloString[lang]"></slot>
+        </div>
+        `,
+        data() {
+          return {
+            helloString: {
+              tw: '哈囉',
+              jp: 'ハロー',
+              en: 'Hello'
+            }
+          }
+        },
+        props: {
+          lang: {
+            type: String,
+            default: 'tw'
+          }
+        }
+      })
+      const vm = app.mount('#app')
+    </script>
+  </body>
+</html>
