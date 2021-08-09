@@ -1,97 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>計算屬性和偵聽器</title>
-    <style></style>
-  </head>
 
-  <body>
-    <div class="container">
-      <div id="app">
-        <h1>計算屬性和偵聽器</h1>
-        <p>
-          模板內的表達式非常便利，但是設計的初衷是用於簡單運算。在模板中放入太多的邏輯會讓模板過重且難以維護。例如：
-        </p>
-        <p v-pre>{{ author.books.length > 0 ? 'Yes' : 'No' }} ... 太長了，難以閱讀</p>
-        <h2>使用 computed</h2>
-        <ul>
-          <li>計算屬性撰寫時是一個函式，但可當成普通屬性綁定於模板</li>
-          <li>計算屬性會自動偵測是否使用到 data 中的資料，只要使用的資料發生改變，那麼綁定於模板的畫面也會更新。</li>
-          <li>計算屬性它是一直暫存，只有在資料改變時，它才會重新求值，沒改變就不會動作。</li>
-          <li>方法則是每次呼叫都會再執行一次，呼叫幾次執行幾次。</li>
-        </ul>
-        <p>{{ validBookLength }}</p>
-        <p>{{ fullName }}</p>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>計算屬性和偵聽器</title>
+  <style></style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="app">
+      <h1>計算屬性和偵聽器</h1>
+      <p>
+        模板內的表達式非常便利，但是設計的初衷是用於簡單運算。在模板中放入太多的邏輯會讓模板過重且難以維護。例如：
+      </p>
+      <p v-pre>{{ author.books.length > 0 ? 'Yes' : 'No' }} ... 太長了，難以閱讀。</p>
+
+      <hr>
+
+      <h2>computed 與 methods</h2>
+      <ul>
+        <li>計算屬性撰寫時是一個函式，但可當成普通屬性綁定於模板。</li>
+        <li>計算屬性會自動偵測是否使用到 data 中的資料，只要使用的資料發生改變，綁定於模板的畫面也會更新。</li>
+        <li>計算屬性（computed）是一直暫存，只有在資料改變時，才會重新求值，沒改變就不會動作。</li>
+        <li>方法（methods）則是每次呼叫都會再執行一次，呼叫幾次執行幾次。</li>
+        <li>方法通常是配合事件使用。</li>
+        <li>兩者都能實現相同功能，使用 computed 是較好的方式</li>
+      </ul>
+      <p>{{ validBookLength }}</p>
+      <p>{{ fullName }}</p>
+
+      <hr>
+
+      <h2>computed 與 watch 比較</h2>
+      <ul>
+        <li>兩者都發生於資料變動時的操作。</li>
+        <li>兩者都能實現相同功能，但使用 computed 是較好的方式，寫法會更簡潔。</li>
+        <li>資料發生變動若要使用非同步操作，可以使用 watch。</li>
+      </ul>
+      <h3>computed</h3>
+      <p>{{price}} * {{count}} = {{ c_total }}</p>
+      <h3>watch</h3>
+      <p>{{price}} * {{count}} = {{ watch_total }}</p>
+
+      <hr>
+
+      <h2>結論：開發時先考慮使用 computed</h2>
     </div>
+  </div>
 
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
 
-    <script>
-      const app = Vue.createApp({
-        data() {
-          return {
-            author: {
-              name: 'John Doe',
-              books: ['Vue 2 - Advanced Guide', 'Vue 3 - Basic Guide', 'Vue 4 - The Mystery']
-            },
-            firstName: '空条',
-            lastName: '承太郎',
-            watchMsg: '哈囉'
-          }
-        },
-        // 計算屬性
-        computed: {
-          validBookLength() {
-            return this.author.books.length > 0 ? 'Yes' : 'No'
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          author: {
+            name: 'John Doe',
+            books: ['Vue 2 - Advanced Guide', 'Vue 3 - Basic Guide', 'Vue 4 - The Mystery']
           },
-          // 使用 get、set 寫法是一個物件
-          fullName: {
-            get() {
-              return this.firstName + this.lastName
-            },
-            set(val) {
-              let name = val.split(' ')
-              this.firstName = name[0]
-              this.lastName = name[1]
-            }
+          firstName: '空条',
+          lastName: '承太郎',
+          watchMsg: '哈囉',
+          count: 10,
+          price: 100,
+          watch_total: 1000,
+        }
+      },
+      // 當計算屬性依賴的資料發生變動時，才會重新計算      
+      computed: {
+        validBookLength() {
+          return this.author.books.length > 0 ? 'Yes' : 'No'
+        },
+        // 使用 get、set 寫法是一個物件
+        fullName: {
+          get() {
+            return this.firstName + this.lastName
+          },
+          set(val) {
+            let name = val.split(' ')
+            this.firstName = name[0]
+            this.lastName = name[1]
           }
         },
-        watch: {
-          // 正在監看一個 watchMsg 的資料屬性
-          watchMsg(newVal, oldVal) {
-            console.log(newVal, oldVal)
-          }
+        c_total() {
+          return this.count * this.price
         }
-      })
-      const vm = app.mount('#app')
-      vm.fullName = '東方 仗助'
-      vm.watchMsg = 'hello' // console 顯示 'hello' '哈囉'
-    </script>
-  </body>
+      },
+      watch: {
+        // 正在監看一個 watchMsg 的資料屬性
+        // 可以監聽資料變動時的非同步事件
+        watchMsg(newVal, oldVal) {
+          setTimeout(() => {
+            console.log(newVal, oldVal)
+          }, 3000);
+        },
+        // 要實現與 computed 一樣效果，還需要新增一個資料變數用於儲存，例如 watch_total
+        // 當 count 發生變動做處理
+        count(newVal, oldVal) {
+          this.watch_total = newVal * this.price
+        }
+      }
+    })
+    const vm = app.mount('#app')
+    vm.fullName = '東方 仗助'
+    vm.watchMsg = 'hello' // console 顯示 'hello' '哈囉'
+  </script>
+</body>
+
 </html>

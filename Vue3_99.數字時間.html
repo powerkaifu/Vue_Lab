@@ -24,16 +24,34 @@
       justify-content: center;
       align-items: center;
     }
+
+    .timebox {
+      color: white;
+      padding: 0 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
+
+    }
   </style>
 </head>
 
 <body>
   <div id="app">
-    <span>{{ hour }}</span>
-    <span>：</span>
-    <span>{{ min }}</span>
-    <span>：</span>
-    <span>{{ sec }}</span>
+    <div class="timebox">
+      <div class="box">
+        <span id="hour">{{ hour }}</span>
+      </div>
+      <span>：</span>
+      <div class="box">
+        <span id="min">{{ min }}</span>
+      </div>
+      <span>：</span>
+      <div class="box">
+        <span id="sec">{{ sec }}</span>
+      </div>
+    </div>
   </div>
 
   <!-- -------------------------------------------------------------------------------------- -->
@@ -62,21 +80,45 @@
     const app = Vue.createApp({
       data() {
         return {
-          hour: 0,
-          min: 0,
-          sec: 0
+          hourNum: 0,
+          minNum: 0,
+          secNum: 0
         }
       },
-      mounted() {
-        setInterval(() => {
-          const date = new Date()
-          this.hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-          this.min = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-          this.sec = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-        }, 1000)
-      }
+      computed: {
+        hour() {
+          setInterval(() => {
+            const date = new Date()
+            this.hourNum = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+          }, 1000);
+          return this.hourNum
+        },
+        min() {
+          setInterval(() => {
+            const date = new Date()
+            this.minNum = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+          }, 1000);
+          return this.minNum
+        },
+        sec() {
+          setInterval(() => {
+            const date = new Date()
+            this.secNum = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+          }, 1000);
+          return this.secNum
+        }
+      },
+      // mounted() {
+      //   setInterval(() => {
+      //     const date = new Date()
+      //     this.hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+      //     this.min = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+      //     this.sec = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      //   }, 1000)
+      // }
     })
     const vm = app.mount('#app')
+    // 動畫與資料要拆開來做，vue 處理資料，gsap 處理動畫
   </script>
 </body>
 

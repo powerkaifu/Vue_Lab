@@ -1,114 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>Class 與 Style 綁定</title>
-    <style>
-      .myBorder {
-        border: 5px solid #333 !important;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>Class 與 Style 綁定</h1>
-        <p>綁定 class、style 屬性，使用物件語法來表示。</p>
-        <h2>Class</h2>
-        <div class="card" :class="card.cardClass" style="width: 18rem">
-          <img class="card-img-top" :src="card.url" />
-          <div class="card-body">
-            <h5 class="card-title">{{ card.title }}</h5>
-            <p class="card-text">{{ card.text }}</p>
-            <p>價格：{{ card.price }} 元</p>
-            <input
-              class="w-100"
-              type="number"
-              v-model="card.price"
-              @keydown.enter="handler($event)"
-              @change="handler($event)"
-            />
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Class 與 Style 綁定</title>
+  <style>
+    .myBorder {
+      border: 5px solid #333 !important;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      background: #aaa;
+    }
+
+    .bg-red {
+      background-color: red;
+    }
+
+    .bg-green {
+      background-color: green;
+    }
+
+    .bg-blue {
+      background-color: blue;
+    }
+
+    .border-big {
+      border: 5px solid #000;
+    }
+
+    .box-shadow {
+      box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Class 與 Style 綁定</h1>
+      <p>綁定 class、style 屬性，建議使用綁物件語法來表示。</p>
+      <h2>Class</h2>
+      <h3>綁字串</h3>
+      <div class="box" :class="classString"></div>
+      <h3>綁物件</h3>
+      <div class="box" :class="classObject"></div>
+      <h3>綁陣列</h3>
+      <div class="box" :class="classArray"></div>
+
+      <h3>Card</h3>
+      <div class="card" :class="card.cardClass" style="width: 18rem">
+        <img class="card-img-top" :src="card.url" />
+        <div class="card-body">
+          <h5 class="card-title">{{ card.title }}</h5>
+          <p class="card-text">{{ card.text }}</p>
+          <p>價格：{{ card.price }} 元</p>
+          <input class="w-100" type="number" v-model="card.price" @keydown.enter="handler($event)" @change="handler($event)" />
         </div>
-        <h2>Style</h2>
-        <div class="card" :style="card.cardStyle" style="width: 18rem">
-          <img class="card-img-top" :src="card.url" />
-          <div class="card-body">
-            <h5 class="card-title">{{ card.title }}</h5>
-            <p class="card-text">{{ card.text }}</p>
-            <p>價格：{{ card.price }} 元</p>
-            <input
-              class="w-100"
-              type="number"
-              v-model="card.price"
-              @keydown.enter="handler($event)"
-              @change="handler($event)"
-            />
-          </div>
+      </div>
+
+      <hr>
+
+      <h2>Style</h2>
+      <div class="box" :style="styleObject"></div>
+      <div class="card" :style="card.cardStyle" style="width: 18rem">
+        <img class="card-img-top" :src="card.url" />
+        <div class="card-body">
+          <h5 class="card-title">{{ card.title }}</h5>
+          <p class="card-text">{{ card.text }}</p>
+          <p>價格：{{ card.price }} 元</p>
+          <input class="w-100" type="number" v-model="card.price" @keydown.enter="handler($event)" @change="handler($event)" />
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
 
-    <script>
-      const app = Vue.createApp({
-        data() {
-          return {
-            card: {
-              url: 'https://picsum.photos/400/300/?random=1',
-              title: '今夏最涼行程',
-              text: '文章計算命令，室內無疑書記電子郵件，我都來自飯店福建，生日。',
-              price: 2000,
-              // css class 以物件表示
-              cardClass: {
-                border1: false
-              },
-              // css inline style 以物件表示
-              cardStyle: {
-                color: 'red',
-                boxShadow: '0 0 5px rgba(0,0,0,0.5)'
-              }
-            }
-          }
-        },
-        methods: {
-          handler(e) {
-            console.log(e.target.value)
-            if (e.target.value > 2000) {
-              this.card.cardClass.myBorder = true
-            } else {
-              this.card.cardClass.myBorder = false
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          classString: 'bg-red',
+          classObject: {
+            'bg-green': true,
+            'border-big': true,
+          },
+          classArray: ['bg-blue', { 'box-shadow': true }],
+          styleObject: {
+            background: 'purple',
+            'margin-bottom': '30px'
+          },
+          card: {
+            url: 'https://picsum.photos/400/300/?random=1',
+            title: '今夏最涼行程',
+            text: '文章計算命令，室內無疑書記電子郵件，我都來自飯店福建，生日。',
+            price: 2000,
+            // css class 以物件表示
+            cardClass: {
+              border1: false
+            },
+            // css inline style 以物件表示
+            cardStyle: {
+              color: 'red',
+              boxShadow: '0 0 5px rgba(0,0,0,0.5)'
             }
           }
         }
-      })
-      const vm = app.mount('#app')
-    </script>
-  </body>
+      },
+      methods: {
+        handler(e) {
+          console.log(e.target.value)
+          if (e.target.value > 2000) {
+            this.card.cardClass.myBorder = true
+          } else {
+            this.card.cardClass.myBorder = false
+          }
+        }
+      }
+    })
+    const vm = app.mount('#app')
+  </script>
+</body>
+
 </html>
