@@ -1,151 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>組件基礎</title>
-    <style>
-      p {
-        font-size: 1.5rem;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>組件基礎</h1>
-        <ul>
-          <li>組件彼此獨立，可重複使用。</li>
-          <li>元件名稱養成習慣使用小寫 + kebab-cased (烤肉串寫法，單字橫線字符分隔)，在使用標籤上符合 HTML 規範。</li>
-          <li>組件也有樹的概念，可以形成組件樹。</li>
-        </ul>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>組件基礎</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
 
-        <hr />
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>組件基礎</h1>
+      <ul>
+        <li>組件就像文件裡的區塊單位，可以將文件想像成一棟建築物，每個樓層有好幾戶，每戶有自己的格局，每戶格局又分為臥室、廚房、客廳等等，組件可以是一整個樓層，可以是樓層裡面的每戶人家的格局，也可以是格局中的各種房間，就看怎麼去拆分組件，換句話說，組件之間有父子層級的關係，再向外延伸成樹狀關係。</li>
+        <li>組件彼此獨立，可重複使用。</li>
+        <li>元件名稱養成習慣使用小寫 + kebab-cased (烤肉串寫法，單字橫線字符分隔)，在使用標籤上符合 HTML 規範。</li>
+        <li>app.component 定義的全域組件，每個地方都可以方便使用，注意的是，如果不使用它會一直掛載在 app，而造成記憶體浪費。</li>
+        <li>組件也有樹的概念，可以形成組件樹。</li>
+      </ul>
 
-        <h2>透過 app.componet() 方法註冊</h2>
-        <button-counter></button-counter>
-        <button-counter></button-counter>
-        <button-counter></button-counter>
+      <hr />
 
-        <hr />
+      <h2>透過 app.componet() 方法註冊組件</h2>
+      <button-counter></button-counter>
+      <button-counter></button-counter>
+      <button-counter></button-counter>
 
-        <h2>設定 props</h2>
-        <ul>
-          <li>props 可以定義組件自己的 attribute，讓他處的資料從 attribute 接收且流進組件裡面。</li>
-          <li>
-            可以是陣列形式，或是更詳細的物件形式：
-            <ul>
-              <li>陣列寫法：注意　attribute name 是字串。</li>
-              <li>
-                物件寫法：對 props
-                有更詳細資料驗證的設定，type、required、default（注意物件、陣列、函式的預設需使用default(){...}）、自訂驗證函式
-                validator()。
-                <ul>
-                  <li>
-                    type 類型檢查可以是以下：
-                    <a
-                      href="https://v3.cn.vuejs.org/guide/component-props.html#%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5"
-                      target="_blank"
-                    >
-                      官網
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li>請把 props 當作 data 資料使用，可以用 this 去存取。</li>
-          <li>
-            props 會在創建實體之前（beforeCreate）進行驗證，所以 data、computed 的 property 在 default、validator
-            函式不能使用。
-          </li>
-          <li>使用組檢時可以使用 v-bind 解構物件並且對應 attribute</li>
-        </ul>
-        <div class="row">
-          <div class="col-4" v-for="user in users">
-            <child-component v-bind="user"></child-component>
-          </div>
-        </div>
+      <hr />
 
-        <hr />
-
-        <h2>監聽子組件事件</h2>
-        <div class="row">
-          <div class="col-4" v-for="user of users">
-            <child-event
-              v-bind="user"
-              v-if="user.name === 'Leanne Graham'"
-              @change-color="color('#FF0000',$event)"
-              ref="child1"
-            ></child-event>
-          </div>
+      <h2>設定 props</h2>
+      <ul>
+        <li>props 可以定義組件自己的 attribute，讓他處的資料從 attribute 接收且流進組件裡面。</li>
+        <li>
+          可以是陣列形式，或是更詳細的物件形式：
+          <ul>
+            <li>陣列寫法：注意　attribute name 是字串寫法。</li>
+            <li>
+              物件寫法：對 props
+              有更詳細資料驗證的設定，type、required、default（注意物件、陣列、函式的預設需使用default(){...}）、自訂驗證函式
+              validator()。
+              <ul>
+                <li>
+                  type 類型檢查可以是以下：
+                  <a href="https://v3.cn.vuejs.org/guide/component-props.html#%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5" target="_blank">
+                    官網
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>請把 props 當作 data 資料使用，可以用 this 去存取。</li>
+        <li>
+          props 會在創建實體之前（beforeCreate）進行驗證，所以 data、computed 的 property 在 default、validator
+          函式不能使用。
+        </li>
+        <li>使用組件標籤時可以使用 v-bind 解構物件並且自動對應 props</li>
+        <li>傳屬性的時候，在組件標籤中使用 hello-world 烤肉串，但是接的時候，得使用 helloWorld 駝峰式。</li>
+      </ul>
+      <div class="row">
+        <div class="col-4" v-for="user in users">
+          <child-component v-bind="user"></child-component>
         </div>
       </div>
+
+      <hr />
+
+      <h2>監聽子組件事件</h2>
+      <div class="row">
+        <div class="col-4" v-for="user of users">
+          <child-event v-bind="user" v-if="user.name === 'Leanne Graham'" @change-color="color('#FF0000',$event)" ref="child1"></child-event>
+        </div>
+      </div>
+
+      <hr>
+
+      <h2>單向資料流</h2>
+      <ul>
+        <li>父組件可以傳遞資料給子組件的 props，但是子組件不能直接修改父組件傳遞給 props 的資料（只能用不能改），這稱為單向資料流。因此，應該將傳遞過來的 props 指定給 data 裡的一個變數，再用該變數去修改（子組件的 props 需要有個接收者）。</li>
+        <li>這種做法是因為組件之間必須彼此獨立，假設同樣的組件有好幾個，其中一個修改父組件的資料，會造成其他組件也修改了父組件的資料，造成組件的資料耦合，沒有辦法獨立區分出來。</li>
+      </ul>
+
+      <hr>
+
+      <h2>非 Prop 的 Attribute</h2>
+      <ul>
+        <li>一個非 prop 的 attribute 是指傳向一個組件，但是該組件並沒有相應 props 或 emits 定義的 attribute，非 Prop 的 Attribute 會被渲染給組件（常見的是 style、class 屬性）。如果想禁用 非 Prop 的
+          Attribute（渲染時不會自動增加），可以在組件裡面設定
+          inheritAttrs: false。</li>
+        <li>此外，如果子組件是多節點（不是用一個元素去包裹）或是設定 inheritAttrs: false 這兩種情況下想使用「非 Prop 的 Attribute」，可以在組件模板(template)中設定 v-bind="$attrs"，這樣組件會將所有的「非 Prop 的
+          Attribute」渲染出來。</li>
+        <li>如果想要單獨拿到某個「非 Prop 的 Attribute」，例如要拿到 msg，可以在組件模板中這樣寫=> :msg="$attrs.msg"</li>
+        <li>在組件的 mounted(){...} 函式中寫入 console.log(this.$attrs)，也可以拿到「非 Prop 的 Attribute」。</li>
+      </ul>
     </div>
+  </div>
 
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
-    <script>
-      const app = Vue.createApp({
-        data() {
-          return {
-            users: ''
-          }
-        },
-        methods: {
-          color(value, event) {
-            console.log(value, event)
-            event.path[1].style.color = value
-          }
-        },
-        mounted() {
-          axios({
-            method: 'get',
-            url: 'https://jsonplaceholder.typicode.com/users'
-          }).then(res => {
-            this.users = res.data
-          })
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          users: null
         }
-      })
-
-      app.component('button-counter', {
-        template:
-          /*html*/
-          `<button @click="counter++">Click {{ counter }} 次！</button>`,
-        data() {
-          return {
-            counter: 0
-          }
+      },
+      methods: {
+        color(value, event) {
+          console.log(value, event)
+          event.path[1].style.color = value
         }
-      })
+      },
+      mounted() {
+        axios({
+          method: 'get',
+          url: 'https://jsonplaceholder.typicode.com/users'
+          // 注意，得使用箭頭函式才能取得 this
+        }).then(res => {
+          this.users = res.data
+        })
+      }
+    })
 
-      app.component('child-component', {
-        template:
-          /*html*/
-          `
+    app.component('button-counter', {
+      template:
+        /*html*/
+        `<button @click="counter++">Click {{ counter }} 次！</button>`,
+      data() {
+        return {
+          counter: 0
+        }
+      }
+    })
+
+    app.component('child-component', {
+      template:
+        /*html*/
+        `
           <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ name }}</h5>
@@ -154,13 +172,13 @@
               </div>
            </div>
           `,
-        props: ['name', 'email', 'phone']
-      })
+      props: ['name', 'email', 'phone']
+    })
 
-      app.component('child-event', {
-        template:
-          /* html */
-          `
+    app.component('child-event', {
+      template:
+        /* html */
+        `
           <div class="card" @click="$emit('change-color',$event)">
             <div class="card-body">
               <h5 class="card-title">{{ name }}</h5>
@@ -169,10 +187,11 @@
             </div>
           </div>
            `,
-        props: ['name', 'email', 'phone']
-      })
+      props: ['name', 'email', 'phone']
+    })
 
-      const vm = app.mount('#app')
-    </script>
-  </body>
+    const vm = app.mount('#app')
+  </script>
+</body>
+
 </html>
