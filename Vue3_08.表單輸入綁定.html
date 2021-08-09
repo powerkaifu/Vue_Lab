@@ -1,143 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>表單輸入綁定</title>
-    <style>
-      p {
-        font-size: 1.5rem;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>表單輸入綁定</h1>
-        <ul>
-          <li>
-            v-model 指令可在表單 input、textarea 及 select
-            元素上創建雙向資料綁定，它會根據控件類型自動選取正確的方法來更新元素。
-          </li>
-          <li>
-            v-model 會忽略所有表單元素的 value、checked、selected attribute 的初始值，將當前活動實體的資料作為來源。
-          </li>
-          <li>通過 JavaScript 在組件的 data 選項中宣告初始值。</li>
-        </ul>
-        <blockquote>雙向綁定：指資料可以流出到畫面，同時，也可以寫入到實體設定的資料屬性。</blockquote>
-        <p>v-model 在內部為不同的輸入元素使用不同的 property 並拋出不同的事件：</p>
-        <ul>
-          <li>text 和 textarea 元素使用 value property 和 input 事件。</li>
-          <li>checkbox 和 radio 使用 checked property 和 change 事件</li>
-          <li>select 字段將 value 作為 prop 並將 change 作為事件。</li>
-        </ul>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>表單輸入綁定</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
 
-        <hr />
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>表單輸入綁定</h1>
+      <ul>
+        <li>
+          v-model 指令可在表單 input、textarea 及 select
+          元素上創建雙向資料綁定，它會根據控件類型自動選取正確的方法來更新元素。
+        </li>
+        <li>
+          v-model 會忽略所有表單元素的 value、checked、selected attribute 的初始值，將當前活動實體的資料作為來源。
+        </li>
+        <li>通過 JavaScript 在組件的 data 選項中宣告初始值。</li>
+      </ul>
+      <blockquote>雙向綁定：指資料可以流出到畫面，同時，也可以寫入到實體設定的資料屬性。</blockquote>
+      <p>v-model 在內部為不同的輸入元素使用不同的 property 並拋出不同的事件：</p>
+      <ul>
+        <li>text 和 textarea 元素使用 value property 和 input 事件。</li>
+        <li>checkbox 和 radio 使用 checked property 和 change 事件</li>
+        <li>select 字段將 value 作為 prop 並將 change 作為事件。</li>
+      </ul>
 
-        <h2>Text</h2>
-        <input type="text" v-model="text" />
-        <p>雙向綁定：{{ text }}</p>
+      <hr />
 
-        <hr />
+      <h2>Text</h2>
+      <input type="text" v-model="text" />
+      <p>雙向綁定：{{ text }}</p>
 
-        <h2>Textarea</h2>
-        <textarea v-model="textarea"></textarea>
-        <p>雙向綁定：{{ textarea }}</p>
+      <hr />
 
-        <hr />
+      <h2>Textarea</h2>
+      <textarea v-model="textarea"></textarea>
+      <p>雙向綁定：{{ textarea }}</p>
 
-        <h2>Checkbox 單選</h2>
-        <input type="checkbox" value="寫程式" v-model="checkbox" />
-        單獨的 checkbox 輸出是 Boolean。
-        <p>雙向綁定：{{ checkbox }}</p>
+      <hr />
 
-        <input type="checkbox" v-model="toggle" true-value="Yes" false-value="No" />
-        也可以設定輸出訊息：{{ toggle }}
-        <hr />
+      <h2>Checkbox 單選</h2>
+      <input type="checkbox" v-model="checkbox" />
+      單獨的 checkbox 輸出是 Boolean。
+      <p>雙向綁定：{{ checkbox }}</p>
 
-        <h2>Checkbox 複選</h2>
-        <p>複選的 checkbox 輸出需要一個陣列資料。</p>
-        <input type="checkbox" value="寫程式" v-model="checkboxs" />
-        寫程式
-        <input type="checkbox" value="睡覺" v-model="checkboxs" />
-        睡覺
-        <input type="checkbox" value="吃東西" v-model="checkboxs" />
-        吃東西
-        <input type="checkbox" value="健身" v-model="checkboxs" />
-        健身
-        <p>雙向綁定：{{ checkboxs }}</p>
+      <input type="checkbox" v-model="toggle" true-value="Yes" false-value="No" />
+      也可以設定輸出訊息：{{ toggle }}
+      <hr />
 
-        <hr />
+      <h2>Checkbox 複選</h2>
+      <p>複選的 checkbox 輸出需要一個陣列資料。</p>
+      <input type="checkbox" value="寫程式" v-model="checkboxs" />
+      寫程式
+      <input type="checkbox" value="睡覺" v-model="checkboxs" />
+      睡覺
+      <input type="checkbox" value="吃東西" v-model="checkboxs" />
+      吃東西
+      <input type="checkbox" value="健身" v-model="checkboxs" />
+      健身
+      <p>雙向綁定：{{ checkboxs }}</p>
 
-        <h2>Radio 單選</h2>
-        <input type="radio" value="男" v-model="radio" />
-        男
-        <input type="radio" value="女" v-model="radio" />
-        女
-        <p>雙向綁定：{{ radio }}</p>
+      <hr />
 
-        <hr />
+      <h2>Radio 單選</h2>
+      <input type="radio" value="男" v-model="radio" />
+      男
+      <input type="radio" value="女" v-model="radio" />
+      女
+      <p>雙向綁定：{{ radio }}</p>
 
-        <h2>Select 選擇框</h2>
-        <select v-model="selected">
-          <option value="" disabled>請選擇</option>
-          <option value="美洲伺服器">美洲伺服器</option>
-          <option value="歐洲伺服器">歐洲伺服器</option>
-          <option value="亞洲伺服器">亞洲伺服器</option>
-        </select>
-        <p>雙向綁定：{{ selected }}</p>
+      <hr />
 
-        <hr />
+      <h2>Select 選擇框</h2>
 
-        <h2>修饰符請參考</h2>
-        <p>
-          v-model.lazy、v-model.trim、v-model.number
-          <a href="https://v3.cn.vuejs.org/guide/forms.html#%E4%BF%AE%E9%A5%B0%E7%AC%A6" target="_blank">參考官網</a>
-        </p>
-      </div>
+      <select v-model="selected">
+        <!-- 預設設定不選擇，加上 value="" disabled -->
+        <option value="" disabled>請選擇</option>
+        <option value="美洲伺服器">美洲伺服器</option>
+        <option value="歐洲伺服器">歐洲伺服器</option>
+        <option value="亞洲伺服器">亞洲伺服器</option>
+      </select>
+      <p>雙向綁定：{{ selected }}</p>
+
+      <h3>循環 option</h3>
+      <!-- 多選加上 multiple -->
+      <select v-model="selected2" multiple>
+        <option v-for="option of options" :value="option.value">{{ option.text }}</option>
+      </select>
+      <p>value 也可以是物件：{{ selected2 }}</p>
+      <hr />
+
+      <h2>修飾符請參考</h2>
+      <p>
+        v-model.lazy、v-model.trim、v-model.number
+        <a href="https://v3.cn.vuejs.org/guide/forms.html#%E4%BF%AE%E9%A5%B0%E7%AC%A6" target="_blank">參考官網</a>
+      </p>
     </div>
+  </div>
 
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
-    <script>
-      const app = Vue.createApp({
-        data() {
-          return {
-            text: '',
-            textarea: '',
-            checkbox: false,
-            toggle: 'No',
-            checkboxs: [],
-            radio: null,
-            selected: ''
-          }
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          text: '',
+          textarea: '',
+          checkbox: false,
+          toggle: 'No',
+          checkboxs: [],
+          radio: null,
+          selected: '',
+          selected2: [],
+          options: [
+            { text: 'A', value: { value: 'A' } },
+            { text: 'B', value: { value: 'B' } },
+            { text: 'C', value: { value: 'C' } }
+          ]
         }
-      })
+      }
+    })
 
-      const vm = app.mount('#app')
-    </script>
-  </body>
+    const vm = app.mount('#app')
+  </script>
+</body>
+
 </html>
