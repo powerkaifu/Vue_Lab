@@ -1,135 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>組件自定義事件</title>
-    <style>
-      p {
-        font-size: 1.5rem;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>自定義事件</h1>
-        <ul>
-          <li>自訂義名稱也是養成習慣使用小寫、kebab-cased (烤肉串寫法，單字橫線字符分隔)，怎麼寫就怎麼用。</li>
-          <li>組件裡面建議定義所有發出的事件，以便更好地記錄組件應該如何工作。</li>
-          <li>Props in，Event out</li>
-        </ul>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>組件自定義事件</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
 
-        <div v-for="(book,index) in books">
-          <!-- @update 為子元件自訂義監聽事件，觸發後會將改變的值傳入 updateInfo -->
-          <my-component v-bind="book" :key="book.id" @update="updateInfo"></my-component>
-          <hr />
-        </div>
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>自定義事件</h1>
+      <ul>
+        <li>事件自訂義名稱如果在組件內部如果使用駝峰式，例如 addOne，那麼在使用組件時，事件名稱就要寫成烤肉串 add-one。</li>
+        <li>所以，事件自訂義名稱養成習慣使用小寫、kebab-cased (烤肉串寫法，單字橫線字符分隔)，這樣的話，怎麼寫就怎麼用。</li>
+        <li>組件裡面建議定義所有發出的事件，以便更好地記錄組件應該如何工作。</li>
+        <li>Props in，Event out</li>
+      </ul>
+
+      <h2>自定事件修改外部傳進來的資料</h2>
+      <p>由於單向資料流關係，Vue 禁止父組件的資料被子組件直接修改，解決方式如下：</p>
+      <ol>
+        <li>在子組件 data 建立一個變數，讓 props 接收父組件的資料指定給該變數。</li>
+        <li>或是子組件建立一個自定事件來修改。</li>
+      </ol>
+
+      <!-- 觸發一個 addCount handler，傳遞的參數不寫在這兒喔 -->
+      <counter :count="count" @add-count="addCount"></counter>
+
+      <hr>
+
+      <div v-for="(book,index) in books">
+        <!-- @update 為子元件自訂義監聽事件，觸發後會將改變的值傳入 updateInfo -->
+        <my-component v-bind="book" :key="book.id" @update="updateInfo"></my-component>
+        <hr />
       </div>
     </div>
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
-    <script>
-      // 父組件
-      const app = Vue.createApp({
-        data() {
-          return {
-            books: [
-              {
-                id: '0001',
-                name: 'HTML 學習',
-                author: 'KaiFu',
-                publishedAt: '2021/01'
-              },
-              {
-                id: '0002',
-                name: 'CSS 學習',
-                author: 'KaiFu',
-                publishedAt: '2021/02'
-              },
-              {
-                id: '0003',
-                name: 'JavaScript 學習',
-                author: 'KaiFu',
-                publishedAt: '2021/03'
-              }
-            ]
-          }
+  </div>
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    // 父組件
+    const app = Vue.createApp({
+      data() {
+        return {
+          count: 0,
+          books: [
+            {
+              id: '0001',
+              name: 'HTML 學習',
+              author: 'KaiFu',
+              publishedAt: '2021/01'
+            },
+            {
+              id: '0002',
+              name: 'CSS 學習',
+              author: 'KaiFu',
+              publishedAt: '2021/02'
+            },
+            {
+              id: '0003',
+              name: 'JavaScript 學習',
+              author: 'KaiFu',
+              publishedAt: '2021/03'
+            }
+          ]
+        }
+      },
+      methods: {
+        addCount(count) {
+          this.count = count
         },
-        methods: {
-          updateInfo(val) {
-            console.log('父層', val)
-            const idx = this.books.findIndex(elm => elm.id === val.id)
-            this.books[idx] = val
+        updateInfo(val) {
+          console.log('父層', val)
+          const idx = this.books.findIndex(elm => elm.id === val.id)
+          this.books[idx] = val
+        }
+      }
+    })
+    // 子組件
+    app.component('counter', {
+      /*html*/
+      template: `
+        <div>{{ count }}</div>
+        <button @click="clickHandler">addOne</button>
+      `,
+      props: ['count'],
+      emits: {
+        // 可以判斷自訂義事件
+        'add-count'(count) {
+          if (count > 0) {
+            return true
+          } else {
+            return false
           }
         }
-      })
+      },
+      methods: {
+        clickHandler() {
+          // 可以傳遞參數
+          this.$emit('add-count', this.count + 1)
+        }
+      }
+    })
 
-      // 子組件
-      app.component('my-component', {
-        /*html*/
-        template: `
+    // 子組件
+    app.component('my-component', {
+      /*html*/
+      template: `
         <div class="child-app">
           <div>書名: <input type="text" v-model="bookInfo.name"></div> 
           <div>作者: <input type="text" v-model="bookInfo.author"></div> 
           <div>出版日: <input type="text" v-model="bookInfo.publishedAt"></div> 
         </div>
         `,
-        data() {
-          return {
-            // 設定一個物件來接收 props 接到的資料，才能進行雙向綁定
-            bookInfo: {
-              id: this.id,
-              name: this.name,
-              author: this.author,
-              publishedAt: this.publishedAt
-            }
-          }
-        },
-        // 透過 props 接收 父組件流進來的資料，父組件流進的資料若為物件，需進行解構後取得基型值。
-        props: ['id', 'name', 'author', 'publishedAt'],
-        // 監控資料改變
-        watch: {
-          // 這裡監控 data 的 bookInfo，物件需使用 deep: true 確保深層更新監控
-          // handler 處理器是固定寫法
+      data() {
+        return {
+          // 設定一個物件來接收 props 接到的資料，才能進行雙向綁定
           bookInfo: {
-            deep: true,
-            handler(val) {
-              console.log(val)
-              // 資料更新時觸發 update 事件將修改的值傳出去
-              // 例如 bookInfo 被更新時，透過 this.$emit 觸發在 @update="updateInfo" 訂閱的自訂 update 事件，
-              // 通知外層父元件的 updateInfo 來更新外層的狀態，而不是由子元件來直接更新。
-              // 自己的資料自己改，才是 Vue.js 元件維護資料最安全的方式！
-              this.$emit('update', val)
-            }
+            id: this.id,
+            name: this.name,
+            author: this.author,
+            publishedAt: this.publishedAt
           }
         }
-      })
+      },
+      // 透過 props 接收 父組件流進來的資料，父組件流進的資料若為物件，需進行解構後取得基型值。
+      props: ['id', 'name', 'author', 'publishedAt'],
+      // 監控資料改變
+      watch: {
+        // 這裡監控 data 的 bookInfo，物件需使用 deep: true 確保深層更新監控
+        // handler 處理器是固定寫法
+        bookInfo: {
+          deep: true,
+          handler(val) {
+            console.log(val)
+            // 資料更新時觸發 update 事件將修改的值傳出去
+            // 例如 bookInfo 被更新時，透過 this.$emit 觸發在 @update="updateInfo" 訂閱的自訂 update 事件，
+            // 通知外層父元件的 updateInfo 來更新外層的狀態，而不是由子元件來直接更新。
+            // 自己的資料自己改，才是 Vue.js 元件維護資料最安全的方式！
+            this.$emit('update', val)
+          }
+        }
+      }
+    })
 
-      const vm = app.mount('#app')
-    </script>
-  </body>
+    const vm = app.mount('#app')
+  </script>
+</body>
+
 </html>

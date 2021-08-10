@@ -1,105 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>模板語法</title>
-    <style>
-      p {
-        font-size: 1.5rem;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>模板語法</h1>
-        <h2>{{ person }}：{{ msg }}</h2>
-        <h4 v-pre>{{}} 裡面可以使用表達式 expression</h4>
-        <ul>
-          <li>{{ num + 100 }}</li>
-          <li>{{ true ? '天氣好' : '天氣糟' }}</li>
-          <li>{{ msg || '哈囉' }}</li>
-          <li>{{ msg.split('').reverse().join('') }}</li>
-        </ul>
-        <p>語句（Statement）、流程控制（flow control）都無法在鬍子語法裡面</p>
-        <hr />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>模板語法</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
 
-        <h2 v-once>{{ once }}</h2>
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>模板語法</h1>
+      <h2>{{ person }}：{{ msg }}</h2>
+      <h4 v-pre>{{}} 裡面可以使用表達式 expression</h4>
+      <ul>
+        <li>{{ num + 100 }}</li>
+        <li>{{ true ? '天氣好' : '天氣糟' }}</li>
+        <li>{{ msg || '哈囉' }}</li>
+        <li>{{ msg.split('').reverse().join('') }}</li>
+      </ul>
+      <p>語句（Statement）、流程控制（flow control）都無法在鬍子語法裡面</p>
 
-        <hr />
+      <hr />
 
-        <h2 v-html="vhtml"></h2>
+      <h2>v-once 只渲染一次</h2>
+      <p v-once>{{ once }}</p>
 
-        <hr />
+      <hr />
 
-        <h2>綁屬性 v-bind，縮寫「:」</h2>
-        <ul>
-          <li>如果綁定的值是 null 或 undefined，那麼該 attribute 將不會被包含在渲染的元素上。</li>
-          <li>值被判斷 truty 或空字串都可以被渲染。</li>
-        </ul>
-        <img :src="imgUrl" />
-        <a :href="googleUrl">google</a>
-        <hr />
-      </div>
+      <h2 v-html="vhtml"></h2>
+
+      <hr />
+
+      <h2>綁屬性 v-bind，縮寫「:」</h2>
+      <ul>
+        <li>如果綁定的值是 null 或 undefined，那麼該 attribute 將不會被包含在渲染的元素上。</li>
+        <li>值被判斷 truty 或空字串都可以被渲染。</li>
+      </ul>
+      <img :src="imgUrl" />
+      <a :href="googleUrl">google</a>
+
+      <hr />
+
+      <h2>使用 ref 屬性設定該節點名稱，並使用 this.$refs 獲取該節點</h2>
+      <div ref="mydom">要獲取這個節點</div>
+
+      <hr>
+
+      <h3>ref 也可以使用在子組件上</h3>
+      <my-component ref="mycomponent"></my-component>
+
+      <hr>
+
+      <h2>嵌套多層組件，provide（提供資料者） 與 inject（接收資料者）</h2>
+      <p>嵌套多層組件不需經過一層一層 props 的傳遞，只需在外層組件設定 provide，並在要接收的子孫組件設定 inject。</p>
+      <p>注意：provide 提供資料是一次性，不具備響應性，也就是說外層資料改變後，無法再讓子孫組件的內容改變，子孫組件拿到的資料永遠是第一次傳遞的內容。
+        這個問題可以使用Vue3的新語法解決（暫存）。</p>
+      <child></child>
+      <button @click="count++">{{ count }}，但無法改變 child</button>
     </div>
+  </div>
 
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
 
-    <script>
-      // 創建一個實體，傳遞一個選項物件設定
-      const app = Vue.createApp({
-        data() {
-          return {
-            person: '承太郎',
-            msg: '',
-            num: 0,
-            once: 'v-once 只渲染一次',
-            vhtml: '<div style="color:red">v-html 可以渲染標籤</div>',
-            imgUrl: 'https://picsum.photos/200/200/?random=1',
-            googleUrl: 'http://www.google.com'
-          }
-        },
-        methods: {
-          sayMsg() {
-            console.log(this.person + ' 說：' + this.msg)
-          }
+  <script>
+    // 創建一個實體，傳遞一個選項物件設定
+    const app = Vue.createApp({
+      data() {
+        return {
+          person: '承太郎',
+          msg: '',
+          num: 0,
+          once: 'v-once 只渲染一次',
+          vhtml: '<div style="color:red">v-html 可以渲染標籤</div>',
+          imgUrl: 'https://picsum.photos/200/200/?random=1',
+          googleUrl: 'http://www.google.com',
+          count: 0
         }
-      })
+      },
+      provide() {
+        return {
+          count: this.count,
+        }
+      },
 
-      // 掛載 DOM，將資料畫面綁定連接起來，vm 是 view 與 module 之間的橋樑
-      const vm = app.mount('#app')
+      methods: {
+        sayMsg() {
+          console.log(this.person + ' 說：' + this.msg)
+        }
+      },
+      // 頁面掛載渲染完成，才允許使用 DOM 結構
+      mounted() {
+        // 或許該節點使用 this.$refs
+        console.log(this.$refs.mydom)
+        // 操作該節點，設定樣式
+        this.$refs.mydom.style.color = "red"
 
-      // 修改裡面的資料
-      vm.msg = '歐拉歐拉歐拉歐拉歐拉歐拉！'
-      // 取得裡面的資料第一種方式
-      console.log(vm.msg)
-      // 使用裡面的方法
-      vm.sayMsg()
-    </script>
-  </body>
+        // 子組件
+        console.log(this.$refs.mycomponent)
+        this.$refs.mycomponent.helloworld()
+      },
+    })
+
+    app.component('my-component', {
+      /*html*/
+      template: `
+            <div>子組件</div>
+      `,
+      methods: {
+        helloworld() {
+          console.log('Hello World')
+        }
+      },
+    })
+
+    // provide 與 inject
+    app.component('child', {
+      /*html*/
+      template: `
+        <child-child>
+      `
+    })
+
+    app.component('child', {
+      /*html*/
+      template: `
+        <div>{{ count }}</div>
+      `,
+      inject: ['count']
+    })
+
+    // 掛載 DOM，將資料畫面綁定連接起來，vm 是 view 與 module 之間的橋樑
+    const vm = app.mount('#app')
+
+    // 修改裡面的資料
+    vm.msg = '歐拉歐拉歐拉歐拉歐拉歐拉！'
+    // 取得裡面的資料第一種方式
+    console.log(vm.msg)
+    // 使用裡面的方法
+    vm.sayMsg()
+  </script>
+</body>
+
 </html>

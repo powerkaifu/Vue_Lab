@@ -1,108 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-    <title>Vue3x</title>
-    <style>
-      p {
-        font-size: 1.5rem;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>Slot插槽</h1>
-        <p>
-          插槽指在內層子組件打了個洞，在子組件模板加上&lt;slot&gt;&lt;/slot&gt;當作佔位器，允許外層傳入內容時在此顯示。子組件本身對
-          slot 沒有任何控制權，完全不知道也不管 slot 被傳入甚麼東西。
-        </p>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Slot插槽</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
 
-        <hr />
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Slot插槽</h1>
+      <p>
+        插槽指在內層子組件打了個洞，在子組件模板加上&lt;slot&gt;&lt;/slot&gt;當作佔位器，允許外層傳入內容時在此顯示（同個組件可以藉由插槽渲染不同內容）。傳入的內容可以是html元素內容或另一個組件，在定義插槽的子組件內，其本身對 slot 沒有任何控制權，完全不知道也不管 slot
+        被傳入甚麼東西。
+      </p>
+      <p>slot 本身不能綁定事件，須包裹一層元素，在該元素上增加事件。</p>
+      <p>作用域概念，在父模板調用的資料屬性，使用的都是父組件裡的資料。在子模板調用的資料屬性，使用的都是子組件裡的資料。</p>
 
-        <slot-it>{{ msg }}</slot-it>
+      <my-slot>{{ msg }}</my-slot>
 
-        <hr />
+      <hr />
 
-        <p>
-          如果需要預設內容可以在子組件模板 slot
-          佔位器上先輸入內容，前提是外層要沒有輸入任何內容，預設內容才會顯示。如上面外層已經輸入內容 msg，那麼
-          "我是預設內容" 就不會出現。
-        </p>
+      <h2>預設內容</h2>
+      <p>
+        如果需要預設內容可以在子組件模板 slot
+        佔位器上先輸入內容，前提是外層沒有輸入任何內容，預設內容才會顯示。例如上面外層已經輸入內容 msg，那麼子組件模板 slot
+        佔位器上的 "我是預設內容" 就不會出現。
+      </p>
 
-        <hr />
+      <hr />
 
-        <h2>具名插槽</h2>
-        <p>
-          具名插槽就是在子組件模板給予插槽 name 屬性，在外層使用 template、v-slot 語法，並且指名哪個插槽要插入甚麼內容。
-        </p>
-        <slot-named>
-          <template v-slot:header>hello，我是具名插槽 header 插入的內容</template>
-          hello，這沒有具名，我是body
-          <template v-slot:footer>hello，我是具名插槽 footer 插入的內容</template>
-        </slot-named>
-      </div>
+      <h2>具名插槽</h2>
+      <ul>
+        <li>具名插槽（根據插槽名稱插入內容）就是在子組件模板賦予插槽 name 屬性及值，在外層使用 template、v-slot:slotName 語法（v-slot後面接的是:冒號，不是=等號），並且指名哪個 name 的插槽要插入甚麼內容。</li>
+        <li>template 是佔位符元素，它不會被渲染。</li>
+        <li>簡寫語法，例如：&lt;template v-slot:header&gt;，可以寫成 &lt;template #header&gt;</li>
+      </ul>
+
+      <slot-named>
+        <template v-slot:header>hello，我是具名插槽 header 插入的內容</template>
+        hello，這沒有具名，我是body
+        <template v-slot:footer>hello，我是具名插槽 footer 插入的內容</template>
+      </slot-named>
+
+      <hr>
+
+      <h2>作用域插槽（重要）</h2>
+      <p>若想做到子組件的模板 slot 將資料傳遞到外層並且渲染出來，需使用作用域插槽。作用域插槽在使用框架、套件上出現較多。</p>
+      <!-- v-slot = "slotProps" 是接收子組件 slot 傳遞過來資料的物件，slotProps 物件可以自行命名，此範例傳遞資料為 item -->
+      <slot-scoped v-slot="slotProps">
+        <!-- 接收到資料後顯示 -->
+        <div>{{ slotProps.item }}</div>
+      </slot-scoped>
+
+      <!-- 可以使用解構寫法，將接收傳遞資料的物件進行解構 -->
+      <slot-scoped v-slot="{item}">
+        <div>{{ item }}</div>
+      </slot-scoped>
+
     </div>
-    <!-- -------------------------------------------------------------------------------------- -->
-    <!-- jQuery 3.6.0 -->
-    <script src="./js/jquery-3.6.0.js"></script>
-    <!-- Bootstrap v5.0.1 -->
-    <script src="./js/bootstrap.bundle.js"></script>
-    <!-- Vue -->
-    <!-- 3.x -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <!-- lodash -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
-    <!-- gsap 主程式 -->
-    <script src="./gsap/gsap.js"></script>
-    <!-- gsap plugins - Core 與 Extra Free  -->
-    <script src="./gsap/CustomEase.js"></script>
-    <script src="./gsap/MotionPathPlugin.js"></script>
-    <script src="./gsap/ScrollToPlugin.js"></script>
-    <script src="./gsap/ScrollTrigger.js"></script>
-    <!-- gsap plugins - club 會員付費 -->
-    <script src="./gsap/plugins/SplitText.min.js"></script>
-    <script>
-      const app = Vue.createApp({
-        data() {
-          return {
-            msg: '我是外層的內容，要在內層的 slot 顯示',
-            langOptions: [
-              { name: '繁體中文', val: 'tw' },
-              { name: '日本語', val: 'jp' },
-              { name: 'English', val: 'en' }
-            ],
-            lang: 'tw'
-          }
+  </div>
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          msg: '我是外層的內容，寫在 my-slot 裡面，會在 my-slot 內層的 slot 插槽顯示',
+          langOptions: [
+            { name: '繁體中文', val: 'tw' },
+            { name: '日本語', val: 'jp' },
+            { name: 'English', val: 'en' }
+          ],
+          lang: 'tw'
         }
-      })
+      }
+    })
 
-      app.component('slot-it', {
-        /*html*/
-        template: `
+    app.component('my-slot', {
+      /*html*/
+      template: `
         <div>
           <slot>我是預設內容</slot>
           <br>
           {{ msg }}
         </div>
         `,
-        data() {
-          return {
-            msg: '我是內層的內容'
-          }
+      data() {
+        return {
+          msg: '我是內層的內容'
         }
-      })
+      }
+    })
 
-      app.component('slot-named', {
-        /*html*/
-        template: `
+    app.component('slot-named', {
+      /*html*/
+      template: `
           <div>
             <slot name="header">Default Header</slot>
             <hr>
@@ -111,8 +132,25 @@
             <slot name="footer">Default Footer</slot>
           </div>
         `
-      })
-      const vm = app.mount('#app')
-    </script>
-  </body>
+    })
+
+    // 作用域插槽
+    // :item = "item" 指的是要傳遞至外層父組件 slot 所要用的資料
+    app.component('slot-scoped', {
+      /*html*/
+      template: `
+        <div>
+          <slot v-for="item of list" :item="item">{{ item }}</slot>
+        </div>
+      `,
+      data() {
+        return {
+          list: [1, 2, 3]
+        }
+      }
+    })
+    const vm = app.mount('#app')
+  </script>
+</body>
+
 </html>

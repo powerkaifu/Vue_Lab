@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/bootstrap.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-  <title>組件的props_v-model</title>
+  <title>Vue3x</title>
   <style>
     p {
       font-size: 1.5rem;
@@ -18,11 +18,21 @@
 <body>
   <div id="app">
     <div class="container">
-      {{ message }}
-      <custom-input v-model:msg="message"></custom-input>
+      <h1>動態組件</h1>
+      <p>藉由資料的改變並配合使用&lt;component&gt;、:is="資料變化"去切換組件的顯示，注意的是，如果是表單欄位，例如 input，在切換時返回內容會消失，只要在動態組件&lt;component&gt;外層加上 keep-alive 標籤即可以保留輸入內容。</p>
+      <keep-alive>
+        <component :is="currentItem"></component>
+      </keep-alive>
+      <button @click="clickHandler">click</button>
+
+      <hr>
+
+      <h1>非同步組件</h1>
+      <p></p>
+      <p>等待 3 秒後顯示非同步組件</p>
+      <async-component></async-component>
     </div>
   </div>
-
   <!-- -------------------------------------------------------------------------------------- -->
   <!-- jQuery 3.6.0 -->
   <script src="./js/jquery-3.6.0.js"></script>
@@ -45,29 +55,55 @@
   <!-- gsap plugins - club 會員付費 -->
   <script src="./gsap/plugins/SplitText.min.js"></script>
   <script>
+
     const app = Vue.createApp({
       data() {
         return {
-          message: 'KaiFu'
+          currentItem: 'input-item'
+        }
+      },
+      methods: {
+        clickHandler() {
+          if (this.currentItem === 'input-item') {
+            this.currentItem = 'common-item'
+          } else {
+            this.currentItem = 'input-item'
+          }
         }
       }
     })
 
-    // :value 綁定 props
-    app.component('custom-input', {
-      template:
-        /*html*/
-        `
-        <input type="text" :value="msg" @input="inputHandler">
-        `,
-      props: ['msg'],
-      methods: {
-        inputHandler(e) {
-          // 接收的 props msg，如果要使用雙向，必須觸發一個 update:msg
-          this.$emit('update:msg', e.target.value)
-        }
-      }
+    app.component('input-item', {
+      /* html */
+      template: `
+        <input type="text">
+      `
     })
+
+    app.component('common-item', {
+      /* html */
+      template: `
+        <div>Hello World</div>
+      `
+    })
+
+    // 非同步組件
+    // 使用 defineAsyncComponent() 定義一個非同步組件，回傳一個 Promise 實體
+    const asyncComponent = Vue.defineAsyncComponent(() => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve({
+            template: `
+                <div>這是一個非同步組件</div>
+              `
+          })
+        }, 3000);
+      })
+    })
+
+    // 註冊非同步組件
+    app.component('async-component', asyncComponent)
+
 
     const vm = app.mount('#app')
   </script>

@@ -89,6 +89,8 @@
         <li>這種做法是因為組件之間必須彼此獨立，假設同樣的組件有好幾個，其中一個修改父組件的資料，會造成其他組件也修改了父組件的資料，造成組件的資料耦合，沒有辦法獨立區分出來。</li>
       </ul>
 
+      <one-way-data-flow :count="count"></one-way-data-flow>
+
       <hr>
 
       <h2>非 Prop 的 Attribute</h2>
@@ -129,7 +131,8 @@
     const app = Vue.createApp({
       data() {
         return {
-          users: null
+          users: null,
+          count: 0,
         }
       },
       methods: {
@@ -188,6 +191,20 @@
           </div>
            `,
       props: ['name', 'email', 'phone']
+    })
+
+    app.component('one-way-data-flow', {
+      /* html */
+      template: `
+        <div>{{ showCount }}</div>
+        <button @click="showCount++">one-way-data-flow</button>
+      `,
+      data() {
+        return {
+          showCount: this.count
+        }
+      },
+      props: ['count']
     })
 
     const vm = app.mount('#app')
