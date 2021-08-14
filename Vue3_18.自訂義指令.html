@@ -7,47 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/bootstrap.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-  <title>css_transition與動畫</title>
+  <title>自訂義指令 directive</title>
   <style>
     p {
       font-size: 1.5rem;
     }
 
-    .animation {
-      animation: animation 3s;
-    }
-
-    @keyframes animation {
-      0% {
-        transform: translateX(0px);
-      }
-
-      50% {
-        transform: translateX(100px);
-      }
-
-      100% {
-        transform: translateX(0px);
-      }
-    }
-
-
     .box {
-      width: 100px;
       height: 100px;
-      border: 1px solid #333;
-    }
-
-    .bgColor1 {
-      background-color: blue;
-    }
-
-    .bgColor2 {
-      background-color: yellow;
-    }
-
-    .transition {
-      transition: all 1s ease;
+      width: 100px;
+      border: 1px solid #000;
+      position: absolute;
     }
   </style>
 </head>
@@ -55,18 +25,16 @@
 <body>
   <div id="app">
     <div class="container">
-      <h1>動畫效果</h1>
-      <p>控制 class 的 true 或 false 來切換動畫。</p>
-      <div :class="animate1">Hello World</div>
-      <button @click="clickHandler">切換動畫</button>
+      <h1>自訂義指令 directive</h1>
+      <input type="text" v-focus>
 
       <hr>
 
-      <h1>轉場效果</h1>
-      <p>控制 class 的 true 或 false 來切換過渡。</p>
-      <div class="box" :class="animate2" @mouseover="mousehoverHandler" @mouseout="mouseoutHandler"></div>
+      <div class="box" v-pos:left="distance"></div>
     </div>
   </div>
+
+
   <!-- -------------------------------------------------------------------------------------- -->
   <!-- jQuery 3.6.0 -->
   <script src="./js/jquery-3.6.0.js"></script>
@@ -89,32 +57,62 @@
   <!-- gsap plugins - club 會員付費 -->
   <script src="./gsap/plugins/SplitText.min.js"></script>
   <script>
+    // 定義一個區域自訂義指令
+    // const directives = {
+    //   focus: {
+    //     mounted(el) {
+    //       el.focus()
+    //     }
+    //   }
+    // }
+
     const app = Vue.createApp({
+      // 使用區域自訂義指令
+      // directives,
       data() {
         return {
-          animate1: {
-            animation: false
-          },
-          animate2: {
-            transition: true,
-            bgColor1: true,
-            bgColor2: false,
-          }
+          distance: 200
         }
       },
-      methods: {
-        clickHandler() {
-          this.animate1.animation = !this.animate1.animation
-        },
-        mousehoverHandler() {
-          this.animate2.bgColor1 = !this.animate2.bgColor1
-          this.animate2.bgColor2 = !this.animate2.bgColor2
-        },
-        mouseoutHandler() {
-          this.animate2.bgColor1 = !this.animate2.bgColor1
-          this.animate2.bgColor2 = !this.animate2.bgColor2
-        }
-      }
+    })
+
+    // 全域定義一個自訂義指令
+    app.directive('focus', {
+      beforeMount(el) {
+        console.log('beforeMount')
+      },
+      mounted(el) {
+        console.log('mounted')
+        el.focus()
+      },
+      beforeUpdate() {
+        console.log('beforeUpdate')
+      },
+      updated() {
+        console.log('updated')
+      },
+      beforeUnmount() {
+        console.log('beforeUnmount');
+      },
+      unmounted() {
+        console.log('unmounted');
+      },
+    })
+
+    // app.directive('pos', {
+    //   mounted(el, binding) {
+    //     el.style.top = binding.value + 'px'
+    //   },
+    //   // 當資料發生變化重新渲染時
+    //   updated(el, binding) {
+    //     el.style.top = binding.value + 'px'
+    //   }
+    // })
+
+    // 可以使用函式簡寫，等價上面
+    app.directive('pos', (el, binding) => {
+      console.log('binding.arg 指 v-pos: 後面的參數', binding.arg)
+      el.style[binding.arg] = binding.value + 'px'
     })
 
     const vm = app.mount('#app')
