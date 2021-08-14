@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Vue3x</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+
+    /* transition 離場動畫 */
+    .transition-leave-from {
+      opacity: 1;
+    }
+
+    .transition-leave-to {
+      opacity: 0;
+    }
+
+    .transition-leave-active {
+      transition: all 1s;
+    }
+
+    /* transition 進場動畫 */
+    .transition-enter-from {
+      opacity: 0
+    }
+
+    .transition-enter-to {
+      opacity: 1
+    }
+
+    .transition-enter-active {
+      transition: all 1s;
+    }
+
+    /* Animation 動畫 */
+    @keyframes animate-in {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(100px);
+      }
+    }
+
+    @keyframes animate-out {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-100px);
+      }
+    }
+
+    .animate-enter-active {
+      animation: animate-in 1s;
+    }
+
+    .animate-leave-active {
+      animation: animate-out 1s;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>transition 元素</h1>
+      <p>可為 transition 元素命名（name）來區別各個動畫元素。</p>
+      <h2>轉場效果</h2>
+      <p>透過 transition 元素與相關 class 設定可以製作轉場效果</p>
+      <ul>
+        <li>進場動畫class：.v-enter-from、.v-enter-to、.v-enter-active</li>
+        <li>離場動畫class：.v-leave-from、.v-leave-to、.v-leave-active</li>
+      </ul>
+      <p>以下為命名後 class，例如 name="transition"</p>
+      <ul>
+        <li>.transition-enter-from、.transition-enter-to、.transition-enter-active</li>
+        <li>.transition-leave-from、.transition-leave-to、.transition-leave-active</li>
+      </ul>
+      <transition name="transition">
+        <div v-if="show">Hello World</div>
+      </transition>
+      <button @click="clickHandler">Click</button>
+
+      <hr>
+
+      <h2>動畫效果</h2>
+      <p>透過 transition 元素與相關 class 設定可以製作動畫效果</p>
+
+      <transition name="animate">
+        <div v-if="show2">Hello World</div>
+      </transition>
+      <button @click="clickHandler2">Click</button>
+    </div>
+
+  </div>
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          show: true,
+          show2: false,
+        }
+      },
+      methods: {
+        clickHandler() {
+          this.show = !this.show
+        },
+        clickHandler2() {
+          this.show2 = !this.show2
+        }
+      },
+    })
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>

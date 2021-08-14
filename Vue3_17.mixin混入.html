@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Vue3x</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Mixins 混入</h1>
+      <ul>
+        <li>Vue3不推薦使用 Mixins，取而代之的是 Composition API（維護性高），因為 mixins 資料邏輯過於分散，需要推斷資料位置、衝突發生問題出在組件還是 mixin 身上。</li>
+        <li>Mixins 是一個物件，用來混入 Vue 組件的 data、methods 等等，如果兩者有相同 data、methods，會以原來組件的為主，如果組件沒有，那麼 Mixins 會混入進去。</li>
+        <li>注意的是，生命週期鉤子函式，會先執行 mixins 裡面的，再執行組件裡面的。</li>
+      </ul>
+
+      <div>{{ number }}</div>
+      <div> {{ msg }}</div>
+      <button @click='clickHandler'>click</button>
+
+      <hr>
+
+      <h2>全域 mixin</h2>
+      <p>使用 app.mixin() 設定一個全域 mixin，定義後每個組件都可以自動使用這個全域 mixin，不需要在每個組件裡面設定 mixins:...，全域維護起來會很麻煩。</p>
+      <!-- 組件 -->
+      <child></child>
+
+      <hr>
+
+      <h2>自訂義屬性(不在data裡面)</h2>
+      <p>可以使用 this.$options.屬性名取得</p>
+      {{ this.$options.myName }}
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    // 定義區域 mixin 物件，必須在每個組件裡面使用 mixins 去使用
+    // const myMixin = {
+    //   data() {
+    //     return {
+    //       number: 2,
+    //       msg: '我是 mixin 物件的屬性，原 data 沒有，所以我就混入進來。'
+    //     }
+    //   }
+    // }
+    const app = Vue.createApp({
+      // myName 是自定義屬性
+      myName: 'KaiFu',
+      data() {
+        return {
+          number: 1
+        }
+      },
+      // 區域 mixin，使用 mixins 來設定，是一個陣列
+      // mixins: [myMixin]
+    })
+
+    // 此組件直接使用了全域 mixin 的 msg
+    app.component('child', {
+      /*html*/
+      template: `
+        <div>{{ number }}</div>
+        <div>{{ msg }}</div>
+        <button @click='clickHandler'>click</button>
+      `
+    })
+
+    // 全域 mixins，每個組件都會自動使用它，因此每個組件不需要使用 mixins 再去定義
+    app.mixin({
+      // myName 是自定義屬性
+      myName: 'AFU',
+      data() {
+        return {
+          number: 2,
+          msg: '我是 mixin 物件的屬性，原 data 沒有，所以我就混入進來。'
+        }
+      },
+      methods: {
+        clickHandler() {
+          this.number++
+        }
+      }
+    })
+
+    // 可以修改自訂義屬性的優先權，這裡針對 myName 修改，mixin 的自訂義屬性 myName 優先權現在大於組件
+    app.config.optionMergeStrategies.myName = (mixValue, appValue) => {
+      return mixValue || appValue
+    }
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>
