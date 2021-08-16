@@ -7,10 +7,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./css/bootstrap.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-  <title>Slot插槽_scoped</title>
+  <title>Teleport</title>
   <style>
     p {
       font-size: 1.5rem;
+    }
+
+    .box {
+      height: 300px;
+      width: 200px;
+      border: 1px solid #000;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .mask {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
     }
   </style>
 </head>
@@ -18,18 +38,18 @@
 <body>
   <div id="app">
     <div class="container">
-      <h2>Scoped Slots</h2>
-      <p>插槽的內容原本是由外層提供，但是如果要使用子組件內的 data、props，就要使用 Scoped Slots 來處理。</p>
-      <select v-model="lang">
-        <option v-for="langOption of langOptions" :value="langOption.val">{{ langOption.name }}</option>
-      </select>
-      <slot-scoped :lang="lang">
-        <template v-slot:default="props">
-          {{ langOptions.find(langOption => langOption.val === lang)['name'] }}: {{ props.hello }}
-        </template>
-      </slot-scoped>
+      <h1>Teleport（傳送門 Vue3.x）</h1>
+      <p>telport 傳送門可以傳送組件某個部分到指定的元素區域。to='body' 指要顯示於 body，屬性值採 CSS 選擇器，如果要顯示 hello 這個ID的區域，那就是 to="#hello"。</p>
+      <div class="box">
+        <button @click="clickHandler">按鈕</button>
+        <teleport to='body'>
+          <div class="mask" v-show="show">hello</div>
+        </teleport>
+      </div>
     </div>
   </div>
+
+
   <!-- -------------------------------------------------------------------------------------- -->
   <!-- jQuery 3.6.0 -->
   <script src="./js/jquery-3.6.0.js"></script>
@@ -52,42 +72,20 @@
   <!-- gsap plugins - club 會員付費 -->
   <script src="./gsap/plugins/SplitText.min.js"></script>
   <script>
+
     const app = Vue.createApp({
       data() {
         return {
-          msg: '我是外層的內容，要在內層的 slot 顯示',
-          langOptions: [
-            { name: '繁體中文', val: 'tw' },
-            { name: '日本語', val: 'jp' },
-            { name: 'English', val: 'en' }
-          ],
-          lang: 'tw'
-        }
-      }
-    })
-    app.component('slot-scoped', {
-      /* html */
-      template: `
-        <div>
-          <slot name="default" :hello="helloString[lang]"></slot>
-        </div>
-        `,
-      data() {
-        return {
-          helloString: {
-            tw: '哈囉',
-            jp: 'ハロー',
-            en: 'Hello'
-          }
+          show: false
         }
       },
-      props: {
-        lang: {
-          type: String,
-          default: 'tw'
+      methods: {
+        clickHandler() {
+          this.show = !this.show
         }
       }
     })
+
     const vm = app.mount('#app')
   </script>
 </body>
