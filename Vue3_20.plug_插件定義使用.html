@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Plug 插件定義使用</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Plug 插件定義使用</h1>
+      <p>插件是把通用性功能封裝起來。主流插件都是使用這樣的方式將功能封裝起來。</p>
+      <my-title></my-title>
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    // 定義一個插件
+    const myPlugin = {
+      // 固定寫法，第一參數為實體，第二參數為 app.use 時要傳入的資料
+      install(app, options) {
+        console.log(app, options)
+        // 定義提供者
+        app.provide('name', 'KaiFu Chang')
+        // 定義指令
+        app.directive('focus', {
+          mounted(el) {
+            el.focus()
+          }
+        })
+        // 定義 mixin
+        app.mixin({
+          mounted() {
+            console.log('mixin')
+          }
+        })
+        // 定義全域私有屬性，請加上$
+        app.config.globalProperties.$sayHello = 'hello world YAYAYA'
+      }
+    }
+
+    const app = Vue.createApp({
+    })
+
+    app.component('my-title', {
+      /*html*/
+      template: `
+        <div>hello world</div>
+        <div>{{ name }}</div>
+        <input v-focus />
+      `,
+      inject: ['name'],
+      mounted() {
+        console.log(this.$sayHello)
+      }
+    })
+
+    // 使用插件 app.use
+    // 參數一為插件名稱，參數二要傳入插件的資料
+    app.use(myPlugin, { name: 'KaiFu' })
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>
