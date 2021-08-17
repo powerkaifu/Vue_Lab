@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Composition_API_ref與reactive</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>ref() 與 reactive()</h1>
+      <p>兩者原理是通過 proxy 對資料進行封裝，當資料變化時，觸發模板內容的更新。ref、reactive 可替代原來 Vue data(){...} 裡面的資料寫法。</p>
+      <p>ref() => 處理基礎型別（string、number、null、undefined、boolean）的資料</p>
+      <p>reactive() => 處理物件型別（object、array）的資料</p>
+      <div>{{ name }}</div>
+      <div>{{ nameObj.name }}</div>
+
+      <hr>
+
+      <h1>readonly()</h1>
+      <p>資料只用於唯讀，無法被修改</p>
+
+      <hr>
+
+      <h1>toRefs()</h1>
+      <p>解構物件可以使用 toRefs()，這樣解構出的資料才具備響應式，如果直接對物件資料進行解構是不會有響應式。</p>
+      <div>{{ msg }}</div>
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      setup(props, context) {
+        // 引用 ref 功能
+        const { ref } = Vue
+        // ref 處理基礎型別的資料，'KaiFu' 會通過 proxy 變成 proxy({value: 'KaiFu'})，變成響應式物件的資料
+        let name = ref('KaiFu')
+        setTimeout(() => {
+          // 注意，name.value 在 return 丟出去時可以直接使用 name
+          name.value = 'KaiFu Chang'
+        }, 2000);
+
+        // 引用 reactive 功能
+        const { reactive } = Vue
+        // reactive 處理物件型別資料，{ name: 'KaiFu' } 會通過 proxy 變成 proxy({ name: 'KaiFu' } )，變成響應式物件的資料
+        const nameObj = reactive({ name: 'KaiFu' })
+        setTimeout(() => {
+          nameObj.name = 'KaiFu Chang'
+        }, 2000);
+
+        // 引用 readonly
+        const { readonly } = Vue
+        // 只能唯讀，無法修改
+        const copyNameObj = readonly([123])
+        setTimeout(() => {
+          copyNameObj[0] = 456
+        }, 2000);
+
+        // 引用 toRefs
+        const { toRefs } = Vue
+        const msgObj = reactive({ msg: 'Hello World' })
+        setTimeout(() => {
+          msgObj.msg = 'Hello Vue'
+        }, 2000);
+        // 解構物件可以使用 toRefs()，這樣解構出的資料才具備響應式
+        // 本來是 proxy({ msg: 'Hello World' }) 變成 { name: proxy({ msg: 'Hello World' }) }
+        // 注意，如果解構物件裡面沒有的屬性，並不會成功，toRefs() 只能解構物件擁有的屬性！
+        // 想要解構物件沒有的屬性，要使用 toRef()
+        const { msg } = toRefs(msgObj)
+
+        // 將資料丟出去
+        return {
+          name,
+          nameObj,
+          copyNameObj,
+          msg
+        }
+      },
+    })
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>

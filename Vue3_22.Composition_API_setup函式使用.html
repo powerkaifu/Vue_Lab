@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Composition_API_setup函式使用</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Composition API</h1>
+      <p>解決了原本Vue撰寫時資料與程式邏輯過於分散的問題。</p>
+      <h1>setup 函式</h1>
+      <p>setup 函式是 Composition API 最核心的東西，它被建立於 created 初始化之前，因此裡面不能使用 this。</p>
+      <div @click="clickHandler">{{ name }}</div>
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      // created 實體被完全初始化之前建立
+      // 因此在裡面拿不到實體的東西（實體的東西尚未建立）
+      // 也就是在 setup 裡面是無法使用 this
+      setup(props, context) {
+        return {
+          name: 'KaiFu',
+          clickHandler() {
+            alert('12345')
+          }
+        }
+      },
+      // app 實體被建立後，可以藉由 this.$options.setup() 抓到 setup
+      // 這是因為 setup 此時已經建立好
+      methods: {
+        test() {
+          console.log(this.$options.setup())
+        }
+      },
+      mounted() {
+        this.test()
+      },
+    })
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Composition API Computed</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>Computed</h1>
+      {{ count }} ----- {{ c_count }}
+      <button @click="addCount">ADD</button>
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+
+    const app = Vue.createApp({
+      setup() {
+        const { ref, computed } = Vue
+        const count = ref(0)
+        const addCount = () => {
+          count.value += 1
+        }
+
+        // computed 一般用法
+        // const c_count = computed(() => {
+        //   return count.value + 5
+        // })
+
+        // computed get、set 用法
+        let c_count = computed({
+          get() {
+            return count.value + 5
+          },
+          set(value) {
+            count.value = value - 5
+          }
+        })
+        setTimeout(() => {
+          c_count.value = 100
+        }, 2000);
+
+
+        return {
+          count,
+          addCount,
+          c_count
+        }
+      }
+    })
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>

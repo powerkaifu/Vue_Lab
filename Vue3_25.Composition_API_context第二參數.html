@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Composition_API_context第二參數</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>context - setup 函式的第二參數</h1>
+      <p>context 是一個物件，有三個屬性</p>
+      <ul>
+        <li>attrs：指父組件傳遞過來的 non-props 屬性，也就是沒有被子組件 props 接收的屬性，會被 attrs 接收。</li>
+        <li>slots</li>
+        <li>emit：向外傳遞事件可以使用emit()去自訂義事件。</li>
+      </ul>
+
+      <hr>
+
+      <child helloworld="hello world" @change="changeHandler">我是slots插槽的內容</child>
+
+      <hr>
+
+      <p>備註：Composition API 的寫法可以替代傳統 Vue 的寫法。</p>
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    const app = Vue.createApp({
+      methods: {
+        changeHandler() {
+          alert('change')
+        }
+      }
+    })
+    app.component('child', {
+      template: `
+        <div @click="clickHandler">child</div>
+      `,
+      setup(props, context) {
+        const { attrs, slots, emit } = context
+        // attrs 指父組件傳遞過來的 non-props 屬性
+        console.log(attrs)
+        console.log(attrs.helloworld)
+
+        // slots
+        // 透過 composition API 獲取 Slots，要使用 h 方法，它可以建立虛擬 DOM
+        // const { h } = Vue
+        // console.log(slots)
+        // 透過 composition API 獲取 Slots
+        // return () => h('div', {}, slots.default())
+
+        // emit 事件傳遞
+        console.log(emit)
+        function clickHandler() {
+          emit('change')
+        }
+        return {
+          clickHandler
+        }
+      },
+    })
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./css/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+  <title>Composition API TodoList</title>
+  <style>
+    p {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1>TodoList</h1>
+      <div>
+        {{ inputValue }}
+        <input type="text" v-model="inputValue" @input="changeValue">
+        <button @click="() => addItemToList(inputValue)">新增</button>
+      </div>
+      <ul>
+        <li v-for="(item,index) of list" :key="index">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- -------------------------------------------------------------------------------------- -->
+  <!-- jQuery 3.6.0 -->
+  <script src="./js/jquery-3.6.0.js"></script>
+  <!-- Bootstrap v5.0.1 -->
+  <script src="./js/bootstrap.bundle.js"></script>
+  <!-- Vue -->
+  <!-- 3.x -->
+  <script src="https://unpkg.com/vue@next"></script>
+  <!-- axios -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.9.0/lodash.js"></script>
+  <!-- gsap 主程式 -->
+  <script src="./gsap/gsap.js"></script>
+  <!-- gsap plugins - Core 與 Extra Free  -->
+  <script src="./gsap/CustomEase.js"></script>
+  <script src="./gsap/MotionPathPlugin.js"></script>
+  <script src="./gsap/ScrollToPlugin.js"></script>
+  <script src="./gsap/ScrollTrigger.js"></script>
+  <!-- gsap plugins - club 會員付費 -->
+  <script src="./gsap/plugins/SplitText.min.js"></script>
+  <script>
+    // 進行封裝函式，拆解出細項 - 關於 list 操作的內容
+    const listRelativeEffect = () => {
+      const { reactive } = Vue
+      const list = reactive([])
+      const addItemToList = (item) => {
+        list.push(item)
+      }
+      return { list, addItemToList }
+    }
+
+    // 進行封裝函式，拆解出細項 - 關於 inputValue 操作的內容
+    const inputRelativeEffect = () => {
+      const { ref } = Vue
+      const inputValue = ref('')
+      const changeValue = (e) => {
+        inputValue.value = e.target.value
+      }
+      return { inputValue, changeValue }
+    }
+
+    const app = Vue.createApp({
+      setup() {
+        // 導入封裝的資訊
+        const { inputValue, changeValue } = inputRelativeEffect()
+        const { list, addItemToList } = listRelativeEffect()
+        return {
+          changeValue,
+          inputValue,
+          list,
+          addItemToList
+        }
+      }
+    })
+
+    const vm = app.mount('#app')
+  </script>
+</body>
+
+</html>
